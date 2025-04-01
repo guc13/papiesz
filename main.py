@@ -41,7 +41,7 @@ async def play_barka(channel):
             pipe=True,
             **ffmpeg_options
         ))
-
+        await asyncio.sleep(30)
         # Dodatkowe zabezpieczenie czasowe
         start_time = time.time()
         while voice_client.is_playing():
