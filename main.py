@@ -25,14 +25,9 @@ ALLOWED_GUILD_IDS = list(
 
 async def play_barka(channel):
     try:
-        ffmpeg_options = {
-            'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5 -protocol_whitelist file,pipe,udp',
-            'options': '-vn -bufsize 512k -threads 2'
-        }
-        
         voice_client = await channel.connect()
         voice_client.play(
-            discord.FFmpegPCMAudio(executable="ffmpeg", source="barka.wav",pipe=True,**ffmpeg_options))
+            discord.FFmpegPCMAudio(executable="ffmpeg", source="barka.wav",pipe=True))
 
         while voice_client.is_playing():
             await asyncio.sleep(2)
