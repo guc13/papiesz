@@ -4,7 +4,6 @@ services:
     - type: web
       name: discord-bot
       runtime: python  # typ środowiska uruchomieniowego
-python:
   version: 3.11.5  # wymagana wersja Pythona
   installCommand:  # komendy instalacyjne
     "apt-get update && apt-get install -y ffmpeg libopus0 opus-tools && pip install -r requirements.txt"
