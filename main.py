@@ -24,19 +24,40 @@ ALLOWED_GUILD_IDS = list(
 
 
 async def play_barka(channel):
+    voice_client = None
     try:
         voice_client = await channel.connect()
-        voice_client.play(
-            discord.FFmpegPCMAudio(executable="ffmpeg", source="barka.mp3"))
+        
+        # Optymalizacja parametrów FFmpeg
+        ffmpeg_options = {
+            'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5 -protocol_whitelist file,pipe,udp',
+            'options': '-vn -bufsize 512k -threads 2'
+        }
+        
+        # Konwersja do formatu WAV dla większej stabilności
+        voice_client.play(discord.FFmpegPCMAudio(
+            executable="ffmpeg",
+            source="ffmpeg -i barka.mp3 -f wav pipe:1",
+            pipe=True,
+            **ffmpeg_options
+        ))
 
+        # Dodatkowe zabezpieczenie czasowe
+        start_time = time.time()
         while voice_client.is_playing():
-            await asyncio.sleep(2)
+            if time.time() - start_time > 300:  # Maksymalnie 5 minut
+                raise TimeoutError("Przekroczono czas odtwarzania")
+            await asyncio.sleep(0.5)
 
-        await voice_client.disconnect()
     except Exception as e:
-        print(f"Błąd: {str(e)}")
+        print(f"Błąd odtwarzania: {str(e)}")
+    finally:
         if voice_client:
-            await voice_client.disconnect()
+            try:
+                await voice_client.disconnect()
+                await asyncio.sleep(2)  # Czekaj na pełne zamknięcie połączenia
+            except:
+                pass
 
 
 async def find_active_voice_channel():
