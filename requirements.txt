@@ -4,4 +4,3 @@ flask
 pytz
 opuslib==3.0.1
 requests
-libavcodec-extra
