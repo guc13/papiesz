@@ -27,7 +27,7 @@ async def play_barka(channel):
     try:
         voice_client = await channel.connect()
         voice_client.play(
-            discord.FFmpegPCMAudio(executable="ffmpeg", source="barka.wav",pipe=True))
+            discord.FFmpegPCMAudio(executable="ffmpeg", source="barka.wav"))
 
         while voice_client.is_playing():
             await asyncio.sleep(2)
