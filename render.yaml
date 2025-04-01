@@ -3,13 +3,11 @@
 services:
     - type: web
       name: discord-bot
-      runtime: python
-      python:
-        version: 3.11.5
-        installCommand: |
-          apt-get update
-          apt-get install -y ffmpeg libopus0 opus-tools
-          pip install -r requirements.txt
+      runtime: python  # typ środowiska uruchomieniowego
+python:
+  version: 3.11.5  # wymagana wersja Pythona
+  installCommand:  # komendy instalacyjne
+    "apt-get update && apt-get install -y ffmpeg libopus0 opus-tools && pip install -r requirements.txt"
       startCommand: python main.py
       envVars:
         - key: DISCORD_TOKEN
