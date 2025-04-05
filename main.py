@@ -57,7 +57,7 @@ async def find_active_voice_channel():
 async def check_time():
     current_time = datetime.now(warsaw_tz).strftime("%H:%M")
 
-    if current_time == "17:32":
+    if current_time == "21:37":
         target_channel = await find_active_voice_channel()
         if target_channel:
             await play_barka(target_channel)
